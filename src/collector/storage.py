@@ -1,3 +1,6 @@
+#Error to logging, remove print
+
+
 from collector import collect_metrics
 from pandas import DataFrame, Timestamp
 import asyncio, time

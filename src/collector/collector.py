@@ -1,10 +1,10 @@
 from psutil import cpu_percent, virtual_memory, disk_io_counters, net_io_counters, pids, net_connections
-from pandas import Timestamp
+import time
 
 
 def get_timestamp() -> float: # returns current UNIX timestamp
-    pd_time = Timestamp.now()
-    unix_time = pd_time.timestamp()
+    ts = time.time()
+    unix_time = ts.timestamp()
     return unix_time
 
 def cpu_usage() -> float: # returns cpu usage percent
@@ -12,8 +12,8 @@ def cpu_usage() -> float: # returns cpu usage percent
     return usage
 
 def memory_percent() -> float: # returns RAM usage
-    RAM_usage_percent = virtual_memory().percent
-    return RAM_usage_percent
+    ram_usage_percent = virtual_memory().percent
+    return ram_usage_percent
 
 def disk_read_bytes() -> int: # returns disk read bytes usage
     bytes_read = disk_io_counters().read_bytes
@@ -43,5 +43,14 @@ functions_list = [get_timestamp, cpu_usage, memory_percent, disk_read_bytes,
                   disk_write_bytes, net_bytes_sent, net_bytes_recv, process_count, tcp_connections]
 
 def collect_metrics() -> dict:
-    metrics_data = {func.__name__: func() for func in functions_list}
-    return metrics_data
+    return {
+        get_timestamp,
+        cpu_usage,
+        memory_percent,
+        disk_read_bytes, 
+        disk_write_bytes,
+        net_bytes_sent,
+        net_bytes_recv,
+        process_count,
+        tcp_connections
+    }
