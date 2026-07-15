@@ -2,7 +2,11 @@ from collector import collect_metrics
 from pandas import DataFrame, Timestamp
 import asyncio, time
 from inspect import iscoroutinefunction
+from pathlib import Path
 
+script_dir = Path(__file__).resolve() # this file path
+project_root = script_dir.parent.parent.parent # going up 2 folders
+output_dir = project_root / "data" / "raw" # .parquet saving path
 
 cache = []
 errors = []
@@ -30,7 +34,7 @@ def save_to_parquet() -> None: # saving data to .parquet
     if df.empty:
         return
     timestamp = time.strftime("%Y%m%d_%H%M%S")
-    df.to_parquet(f"metrics_{timestamp}.parquet")
+    df.to_parquet(output_dir / f"metrics_{timestamp}.parquet")
     cache.clear()
 
 
